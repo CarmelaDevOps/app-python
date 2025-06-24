@@ -6,6 +6,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY . .
+COPY tests/ tests/
 
 CMD ["python", "app.py"]
 
