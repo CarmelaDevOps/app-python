@@ -6,31 +6,27 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  build-test-push:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v3
 
-      - name: Build and run tests
-        run: |
-          docker build -t test-image .
-          docker run --rm test-image pytest tests
+    - name: Build image with pytest
+      run: docker build -t carmelar15/app-python .
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Run tests with pytest
+      run: docker run --rm carmelar15/app-python pytest tests
 
-      - name: Push Docker image to Docker Hub
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: carmelar15/app-python:latest
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Push image to Docker Hub
+      run: docker push carmelar15/app-python
 
