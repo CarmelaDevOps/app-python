@@ -19,7 +19,7 @@ jobs:
       run: docker build -t carmelar15/app-python .
 
     - name: Run tests with pytest
-      run: docker run --rm carmelar15/app-python pytest tests
+      run: docker run --rm carmelar15/app-python pytest
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
